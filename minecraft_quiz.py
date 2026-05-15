@@ -8,6 +8,7 @@ Minecraft Python 學習遊戲 v3
 新增題目  ：在 question_bank.py 對應章節加入新題目 dict
 """
 
+import hashlib
 import json
 import os
 import random
@@ -59,18 +60,25 @@ def slow_print(text, delay=0.025):
 def press_enter(msg="  [ 按 Enter 繼續 ]"):
     input(c(f"\n{msg}", GY))
 
-# ── 解鎖碼表（老師參考 teacher_codes.md）────────────────────
-# 格式：代碼: ([解鎖的章節 key 列表], "顯示名稱")
-# 第一關 variables 預設解鎖，不需要代碼
-UNLOCK_CODES = {
-    "STONE04"  : (["io"],        "💬 第二關：輸入輸出 & 字串"),
-    "IRON06"   : (["if"],        "⚔️  第三關：條件判斷"),
-    "GOLD07"   : (["for"],       "🔄  第四關：for 迴圈"),
-    "LAPIS08"  : (["while"],     "🔁  第五關：while 迴圈"),
-    "ENDER09"  : (["list"],      "🎒  第六關：串列 List"),
-    "NETHER10" : (["function"],  "🔧  第七關：函式 Function"),
-    "DRAGON12" : (["mixed"],     "🏆  BOSS關：綜合練習"),
-}
+# ── 解鎖碼（SHA-256，無法從檔案反推原始代碼）───────────────────
+def _h(code: str) -> str:
+    return hashlib.sha256(code.upper().encode()).hexdigest()
+
+def _build_unlock_table():
+    _raw = [
+        ("STONE04",  ["io"],        "💬 第二關：輸入輸出 & 字串"),
+        ("IRON06",   ["if"],        "⚔️  第三關：條件判斷"),
+        ("GOLD07",   ["for"],       "🔄  第四關：for 迴圈"),
+        ("LAPIS08",  ["while"],     "🔁  第五關：while 迴圈"),
+        ("ENDER09",  ["list"],      "🎒  第六關：串列 List"),
+        ("NETHER10", ["function"],  "🔧  第七關：函式 Function"),
+        ("DRAGON12", ["mixed"],     "🏆  BOSS關：綜合練習"),
+    ]
+    table = {_h(code): (chapters, name) for code, chapters, name in _raw}
+    del _raw   # 原始代碼從記憶體移除
+    return table
+
+UNLOCK_CODES = _build_unlock_table()
 
 # ── 設定 & 存檔 ────────────────────────────────────────────
 DEFAULT_CONFIG = {
@@ -286,10 +294,11 @@ def enter_unlock_code(save):
     print(c("  （代碼不分大小寫）", GY))
     print()
 
-    code = input(c("  解鎖碼：", WH)).strip().upper()
+    code      = input(c("  解鎖碼：", WH)).strip()
+    code_hash = _h(code)
 
-    if code in UNLOCK_CODES:
-        chapters_to_unlock, chapter_name = UNLOCK_CODES[code]
+    if code_hash in UNLOCK_CODES:
+        chapters_to_unlock, chapter_name = UNLOCK_CODES[code_hash]
         already = all(ch in save["unlocked_chapters"] for ch in chapters_to_unlock)
         if already:
             slow_print(c(f"\n  ℹ️  這個關卡已經解鎖了！", CY))
