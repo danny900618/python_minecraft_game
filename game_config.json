@@ -1,0 +1,7 @@
+{
+  "_說明": "老師難度設定檔（章節解鎖改用代碼，不在這裡）",
+  "questions_per_chapter": 5,
+  "max_lives": 2,
+  "diamonds_per_correct": 1,
+  "show_explain_on_wrong": true
+}

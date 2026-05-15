@@ -1,0 +1,23 @@
+# ── 學生進度（每個人不同，不放進 repo）──
+player_save.json
+
+# ── 老師專用，不給學生看 ──────────────────
+teacher_codes.md
+lessons/
+create_curriculum.py
+Python課綱_Minecraft版.xlsx
+build_exe.bat
+
+# ── Python 產生的暫存檔 ───────────────────
+__pycache__/
+*.pyc
+*.pyo
+
+# ── PyInstaller 輸出 ──────────────────────
+build/
+dist/
+*.spec
+
+# ── 系統檔 ───────────────────────────────
+.DS_Store
+Thumbs.db
