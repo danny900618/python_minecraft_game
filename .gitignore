@@ -2,6 +2,7 @@
 player_save.json
 
 # ── 老師專用，不給學生看 ──────────────────
+CLAUDE.md
 teacher_codes.md
 lessons/
 create_curriculum.py

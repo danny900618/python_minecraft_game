@@ -188,10 +188,12 @@ def render_question(qdata, q_no, total, chapter_title, player, diamonds,
 
 def get_answer_input():
     while True:
-        raw = input(c("  你的答案（1-4）：", WH)).strip()
+        raw = input(c("  你的答案（1-4）或 0 回主選單：", WH)).strip()
         if raw in ("1", "2", "3", "4"):
             return int(raw)
-        print(c("  ⚠️  請輸入 1、2、3 或 4！", RD))
+        if raw == "0":
+            return 0
+        print(c("  ⚠️  請輸入 1~4，或 0 回主選單！", RD))
 
 # ── 關卡遊玩邏輯 ───────────────────────────────────────────
 def play_chapter(chapter_key, chapter_data, config, save):
@@ -227,6 +229,7 @@ def play_chapter(chapter_key, chapter_data, config, save):
         print(f"\n  共 {c(str(n), YL)} 題，每題答對得 {c('1 顆鑽石 💎', CY)}")
         print(f"  生命值：{hearts(lives, max_lives)}")
         print(f"  答錯扣一顆心，歸零後重新抽題挑戰")
+        print(c("  輸入 0 可隨時回主選單（已得鑽石不會消失）", GY))
         press_enter()
 
         for idx, q in enumerate(questions, 1):
@@ -234,6 +237,11 @@ def play_chapter(chapter_key, chapter_data, config, save):
             render_question(q, idx, n, title, player,
                             diamonds, lives, max_lives)
             chosen = get_answer_input()
+
+            if chosen == 0:
+                slow_print(c("\n  👋  已離開關卡（已獲得的鑽石保留）", GY), 0.02)
+                press_enter()
+                return save
 
             if chosen == q["ans"]:
                 # ── 答對 ──────────────────────────────────
