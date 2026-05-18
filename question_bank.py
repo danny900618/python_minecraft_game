@@ -198,11 +198,11 @@ CHAPTERS = {
                 "diff"   : 2,
             },
             {
-                "q"      : '"hello world".capitalize() 的結果是？',
-                "opts"   : ["HELLO WORLD", "Hello World", "Hello world", "hello world"],
-                "ans"    : 3,
-                "explain": "capitalize() 只把第一個字母大寫，其餘小寫，結果是 Hello world。",
-                "diff"   : 3,
+                "q"      : 'name = "  Steve  "\nname.strip() 的結果是？',
+                "opts"   : ["'  Steve  '", "'Steve'", "'steve'", "錯誤"],
+                "ans"    : 2,
+                "explain": "strip() 去掉字串前後的空白，結果是 'Steve'。",
+                "diff"   : 2,
             },
         ],
     },
@@ -258,8 +258,8 @@ CHAPTERS = {
             {
                 "q"      : "hp = 3\nfood = 1\nif hp <= 0 or food <= 0:\n    print('危險！')\n印出什麼？",
                 "opts"   : ["危險！", "什麼都不印", "錯誤", "hp = 3"],
-                "ans"    : 1,
-                "explain": "food=1，1 <= 0 是 False；hp=3，3 <= 0 也是 False。但 or 只要一個 True，這裡 food<=0 是 False，hp<=0 也是 False，所以 False or False = False，不會印！\n等等讓我重新看：food=1，1<=0=False；hp=3，3<=0=False；False or False=False，所以不印！\n\n哎，題目出錯了，讓我重新設計... 其實這題的正確答案應該是「什麼都不印」，讓我修正。",
+                "ans"    : 2,
+                "explain": "hp=3，3 <= 0 是 False；food=1，1 <= 0 也是 False。or 需要至少一個條件為 True，False or False = False，所以什麼都不印。",
                 "diff"   : 2,
             },
             {
